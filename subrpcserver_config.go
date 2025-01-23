@@ -168,6 +168,9 @@ func (s *subRPCServerConfigs) PopulateDependencies(cfg *Config,
 			subCfgValue.FieldByName("KeyRing").Set(
 				reflect.ValueOf(cc.KeyRing),
 			)
+			subCfgValue.FieldByName("NodeKeyIndex").Set(
+				reflect.ValueOf(cfg.NodeKeyIndex),
+			)
 
 		case *walletrpc.Config:
 			subCfgValue := extractReflectValue(subCfg)

@@ -804,7 +804,7 @@ func (s *Server) DeriveSharedKey(_ context.Context, in *SharedKeyRequest) (
 	if keyLoc == nil {
 		keyLoc = &KeyLocator{
 			KeyFamily: int32(keychain.KeyFamilyNodeKey),
-			KeyIndex:  0,
+			KeyIndex:  s.cfg.NodeKeyIndex,
 		}
 	}
 

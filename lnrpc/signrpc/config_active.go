@@ -36,4 +36,6 @@ type Config struct {
 	// KeyRing is an interface that the signer will use to derive any keys
 	// for signing messages.
 	KeyRing keychain.SecretKeyRing
+
+	NodeKeyIndex int32
 }

@@ -503,7 +503,7 @@ func Main(cfg *Config, lisCfg ListenerCfg, implCfg *ImplementationCfg,
 	idKeyDesc, err := activeChainControl.KeyRing.DeriveKey(
 		keychain.KeyLocator{
 			Family: keychain.KeyFamilyNodeKey,
-			Index:  0,
+			Index:  cfg.NodeKeyIndex,
 		},
 	)
 	if err != nil {

@@ -107,6 +107,8 @@ const (
 	defaultAlias = ""
 	defaultColor = "#3399FF"
 
+	defaultNodeKeyIndex = 0
+
 	// defaultCoopCloseTargetConfs is the default confirmation target
 	// that will be used to estimate a fee rate to use during a
 	// cooperative channel closure initiated by a remote peer. By default
@@ -394,6 +396,7 @@ type Config struct {
 	ChanStatusSampleInterval      time.Duration `long:"chan-status-sample-interval" description:"The polling interval between attempts to detect if an active channel has become inactive due to its peer going offline."`
 	HeightHintCacheQueryDisable   bool          `long:"height-hint-cache-query-disable" description:"Disable queries from the height-hint cache to try to recover channels stuck in the pending close state. Disabling height hint queries may cause longer chain rescans, resulting in a performance hit. Unset this after channels are unstuck so you can get better performance again."`
 	Alias                         string        `long:"alias" description:"The node alias. Used as a moniker by peers and intelligence services"`
+	NodeKeyIndex                  int32         `long:"nodekeyindex" description:"The node key index"`
 	Color                         string        `long:"color" description:"The color of the node in hex format (i.e. '#3399FF'). Used to customize node appearance in intelligence services"`
 	MinChanSize                   int64         `long:"minchansize" description:"The smallest channel size (in satoshis) that we should accept. Incoming channels smaller than this will be rejected"`
 	MaxChanSize                   int64         `long:"maxchansize" description:"The largest channel size (in satoshis) that we should accept. Incoming channels larger than this will be rejected"`
@@ -625,6 +628,7 @@ func DefaultConfig() Config {
 		ChanDisableTimeout:            defaultChanDisableTimeout,
 		HeightHintCacheQueryDisable:   defaultHeightHintCacheQueryDisable,
 		Alias:                         defaultAlias,
+		NodeKeyIndex:                  defaultNodeKeyIndex,
 		Color:                         defaultColor,
 		MinChanSize:                   int64(funding.MinChanFundingSize),
 		MaxChanSize:                   int64(0),
@@ -1013,6 +1017,11 @@ func ValidateConfig(cfg Config, interceptor signal.Interceptor, fileParser,
 	}
 	if cfg.Autopilot.ConfTarget < 1 {
 		str := "autopilot.conftarget must be positive"
+
+		return nil, mkErr(str)
+	}
+	if cfg.NodeKeyIndex < 0 {
+		str := "nodekeyindex must be non-negative"
 
 		return nil, mkErr(str)
 	}
